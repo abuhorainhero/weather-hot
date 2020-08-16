@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="city" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button type="button" id="search" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" id="weather-icon" alt="">
+            <h1><span id="cityName"></span> - <span id="country"></span></h1>
+            <h3 style="font-size: 100px;"><span id="temperature"></span>&deg;C</h3>
+            <h1 id="weather-condition" class="lead"></h1>
+        </div>
+    </div>
+
+   <script>
+       function showWeatherData(data){
+           if (!data){
+               return;
+           }
+           document.getElementById("weather-icon").src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+           document.getElementById("cityName").innerText = data.name;
+           document.getElementById("country").innerText = data.sys.country;
+           document.getElementById("temperature").innerText = data.main.temp;
+           document.getElementById("weather-condition").innerText = data.weather[0].main;
+
+       }
+       function fetchWeatherData (city){
+           fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${"60fbf8b7487b162686f35eaee40771d1"}&units=metric`)
+           .then(response => response.json())
+           .then(data => showWeatherData(data))
+           .catch(error => alert("Not Found"));
+       }
+       document.getElementById("search").addEventListener("click", function(){
+           const city = document.getElementById("city").value;
+           fetchWeatherData(city);
+       })
+   </script> 
+
+</body>
+
+</html>
